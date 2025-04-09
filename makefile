@@ -1,29 +1,22 @@
+PYTHON = python
+PYBIND11_INC = $(shell $(PYTHON) -m pybind11 --includes)
+PYTHON_LIB_DIR = $(shell $(PYTHON) -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
+PYTHON_LIB = $(shell $(PYTHON) -c "import sysconfig; print(sysconfig.get_config_var('LDLIBRARY').split('.')[0].replace('.dll', '').replace('.lib', '').replace('.a', ''))")
+
+SRC = wordleBindings.cpp wordleGameEngine.cpp
+OUT = wordle_module.pyd
+
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra
-#LDFLAGS = -lstdc++
+CXXFLAGS = -O3 -Wall -shared -std=c++17
 
-.PHONY: clean test
+all: $(OUT)
 
-all: wordle test
-
-wordle: engine.o
-	@echo "Building wordle"
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o wordle engine.o
-
-engine.o: wordleGameEngine.cpp
-	@echo "Compiling wordleGameEngine.cpp to engine.o"
-	$(CXX) $(CXXFLAGS) -c wordleGameEngine.cpp -o engine.o
-
-test: test.o
-	@echo "Building test"
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o test test.o
-
-test.o: wordleGameEngineTest.cpp
-	@echo "Compiling wordleGameEngineTest.cpp to test.o"
-	$(CXX) $(CXXFLAGS) -c wordleGameEngineTest.cpp -o test.o
+$(OUT): $(SRC)
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(OUT) $(PYBIND11_INC) -L$(PYTHON_LIB_DIR) -l$(PYTHON_LIB)
 
 run:
-	./wordle
+	python wordle_ui.py
 
 clean:
-	rm -f *.o wordle test
+	rm -f $(OUT)
+
