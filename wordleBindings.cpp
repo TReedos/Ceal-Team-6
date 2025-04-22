@@ -8,5 +8,6 @@ PYBIND11_MODULE(wordle_module, m) {
 	py::class_<Wordle>(m, "Wordle")
 		.def(py::init<const std::string&>())
 		.def("evaluate_guess", &Wordle::evaluateGuess)
-		.def("play", &Wordle::play);
+		.def("play", &Wordle::play)
+		.def("get_target_word", &Wordle::getTargetWord);
 }

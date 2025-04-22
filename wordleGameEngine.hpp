@@ -19,6 +19,7 @@ public:
 	Wordle(const std::string& wordFile);
 	std::string evaluateGuess(const std::string& guess);
 	void play();
+	std::string getTargetWord() const {return targetWord; }
 	
 };
 

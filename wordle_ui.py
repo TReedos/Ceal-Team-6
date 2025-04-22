@@ -18,7 +18,7 @@ class WordleApp:
     def __init__(self,root):
         self.root = root
         self.root.title("Wordle GUI")
-        self.root.geometry("300x200")
+        self.root.geometry("500x600")
 
         self.game = wordle_module.Wordle("wordList.txt")
         self.attempt = 0
@@ -50,7 +50,8 @@ class WordleApp:
              messagebox.showinfo("Wordle", "Congratulations! You guessed the right word!")
              self.root.quit()
          elif self.attempt >= self.max_attempts:
-             messagebox.showinfo("Wordle", "Out of attempts! Restart the game.")
+             correct = self.game.get_target_word()
+             messagebox.showinfo("Wordle", f"Out of attempts! The correct word was: {correct.upper()}. Restart the game.")
              self.root.quit()
 
     def display_feedback(self, guess, feedback) :
