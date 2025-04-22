@@ -31,7 +31,7 @@ WordleProject/
   pip install pybind11
 
 ## Build
-- without make (commmand prompt)
+- without make
   run './build.bat'
   then run 'python wordle_ui.py' to start the game
 
